@@ -1,0 +1,15 @@
+# Editor project files
+FileRename.kpf
+.komodotools
+
+# Testing repositories/files
+test/input.txt
+test/Files
+
+# Cmake builds
+build
+test/build
+
+# imgui init
+imgui.ini
+
