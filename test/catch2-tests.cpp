@@ -5,9 +5,11 @@
 #include <string>
 #include <vector>
 
-using std::ofstream;
+using std::fstream;
 using std::string;
 using std::vector;
+using std::cout;
+using std::endl;
 
 namespace fs = boost::filesystem;
 
@@ -24,7 +26,7 @@ void createFiles(int n){
         string num = std::to_string(i);
         
         string name = "Test " + num + ".txt";
-        ofstream file ("./Files/" + name);
+        fstream file ("./Files/" + name, fstream::out);
         file.close();
     }
 }
@@ -47,7 +49,7 @@ TEST_CASE("Base Case", "[base]"){
     SECTION("1 singular file and a directory can be created."){
         createFiles(1);
         
-        REQUIRE(fs::exists(test_path + "/Files/Test1.txt") == true);
+        REQUIRE(fs::exists(test_path + "/Files/Test 1.txt") == true);
         fs::remove_all(test_path + "/Files");
     }
     
@@ -56,12 +58,12 @@ TEST_CASE("Base Case", "[base]"){
         
         for(int i = 1; i <= 10; i++){
             string num = std::to_string(i);
-            string name = "Test" + num + ".txt";
+            string name = "Test " + num + ".txt";
             REQUIRE(fs::exists(test_path + "/Files/" + name) == true);
         }
-        
-        fs::remove_all(test_path + "/Files");   
+        fs::remove_all(test_path + "/Files"); 
     }
+    
 }
 
 TEST_CASE("Renaming", "[rename]"){
@@ -70,7 +72,7 @@ TEST_CASE("Renaming", "[rename]"){
         
         string new_name = "Hello.txt";
         
-        ofstream test_file("Files/Test.txt");
+        fstream test_file("Files/Test.txt", fstream::out);
         test_file.close();
         
         fs::rename(test_path + "/Files/Test.txt", test_path + "/Files/" + new_name);

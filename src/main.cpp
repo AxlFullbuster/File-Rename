@@ -8,7 +8,6 @@ using std::string;
 
 int main(){
     FileRename test;
-    //test.createFiles(8);
     
     if(!test.initWindow()){
         cout << "Failed to initialize display." << endl;

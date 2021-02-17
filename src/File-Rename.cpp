@@ -6,14 +6,14 @@ using std::endl;
 using std::vector;
 using std::string;
 using std::ifstream;
-using std::ofstream;
+using std::fstream;
 
 
 namespace fs = boost::filesystem;
 
 
 FileRename::FileRename(){
-    //Do Nothing
+    createFiles(8);
 }
 
 FileRename::~FileRename(){
@@ -24,13 +24,14 @@ FileRename::~FileRename(){
  * Method for testing MAKE SURE TO REMOVE
  */
 void FileRename::createFiles(int n){
-    fs::create_directory(test_path + "/Files");
+    string create_path = test_path + "/Files/";
+    fs::create_directory(create_path);
     
     for(int i = 1; i <= n; i++){
         string num = std::to_string(i);
         
         string name = "Test " + num + ".txt";
-        ofstream file ("./Files/" + name);
+        fstream file (create_path + name, fstream::out);
         file.close();
     }
 }
