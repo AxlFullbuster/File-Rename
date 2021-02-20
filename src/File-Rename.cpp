@@ -13,7 +13,8 @@ namespace fs = boost::filesystem;
 
 
 FileRename::FileRename(){
-    createFiles(8);
+    //uncomment line below to create empty txt files for testing
+    //createFiles(8);
 }
 
 FileRename::~FileRename(){
@@ -179,9 +180,7 @@ void FileRename::filePreview(){
     string key(keywords[selected_key]);
     string ext(file_ext[selected_ext]);
     
-    
     for(int i = 0; i < titles.size(); i++){
-        
         string numeral = std::to_string(i + 1);
         string title = titles[i];                              
         new_filename = key + " " + numeral + " - " + title;
@@ -208,7 +207,7 @@ void FileRename::createDir(){
 }
 
 void FileRename::renameFiles(){
-    for(int i = 0; i < 8; i++){
+    for(int i = 0; i < old_names.size(); i++){
         fs::rename(old_names[i], dir_path + '/' + new_names[i]);
     }
     
