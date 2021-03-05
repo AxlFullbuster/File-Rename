@@ -37,9 +37,11 @@ class FileRename{
         
         int title_count = 0;
         
+        
         bool dir = false;
         bool ready = false;
         bool input = false;
+        bool ignore = false;
         
         std::string windowpath = "/mnt/c/Users/TDial/";
         std::string test_path = "/mnt/c/Users/TDial/Desktop/coding-work/C++/Linux/File-Rename/test";
@@ -50,11 +52,15 @@ class FileRename{
         std::vector<std::string> titles;
         std::vector<std::string> old_names;
         std::array<std::string, 100> new_names;
+        std::vector<std::string> keywords;
+        std::vector<std::string> file_ext;
+        
         
         std::string intToRoman(int);
         void selectionTool();
         void inputFile();
         void filePreview();
+        void editListValues();
         void createDir();
         void renameFiles();
         void debug();

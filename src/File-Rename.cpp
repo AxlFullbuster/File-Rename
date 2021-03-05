@@ -14,7 +14,7 @@ namespace fs = boost::filesystem;
 
 FileRename::FileRename(){
     //uncomment line below to create empty txt files for testing
-    //createFiles(8);
+    createFiles(25);
 }
 
 FileRename::~FileRename(){
@@ -124,11 +124,28 @@ void FileRename::inputFile(){
     }
     
     ImGui::Text("Current Loaded File:%s", filename.c_str());
+    ImGui::Checkbox("Ignore input file.", &ignore);
     ImGui::NextColumn();
     
     ImGui::Text("Loaded Titles");
     ImGui::Separator();
     
+    if(ignore){
+        for(int i = 0; i < 10; i++){
+            titles.push_back(" ");
+        }
+        
+        title_count = titles.size();
+        dir = true;
+        input = true;
+        ready = false;
+        
+        ImGui::Text("Ignoring Input File.");
+        ImGui::End();
+        return;
+    }
+    
+
     ifstream loaded_file(selectpath);
     string line;
     
@@ -143,15 +160,75 @@ void FileRename::inputFile(){
         input = true;
     }else{
         ImGui::Text("No Titles Found.");
-        input = false;
+    }
+    
+    if(titles.size() == 0 && input){
+        for(int i = 0; i < 10; i++){
+            titles.push_back(" ");
+        }
     }
     
     title_count = titles.size();
+    
     
     ImGui::End();
   
 }
 
+void FileRename::editListValues(){
+    ImGui::Begin("Add/Remove Keywords/File Extensions");
+    
+    ImGui::Text("Total Keys:%i", keywords.size());
+    ImGui::Text("Total Extensions:%i", file_ext.size());
+    
+    static char key_buffer[20] = "";
+    ImGui::InputText("Add Keyword", key_buffer, IM_ARRAYSIZE(key_buffer));
+    
+    if(ImGui::Button("Add a new keyword")){
+        string key_input = key_buffer;
+        if(keywords.size() < 10){
+            keywords.push_back(key_input);
+        }
+    }
+    
+    if(ImGui::Button("Remove entered keyword")){
+        string key_input = key_buffer;
+        if(!keywords.empty()){
+            for(int i = 0; i < keywords.size(); i++){
+                if(keywords[i].compare(key_input) == 0){
+                    keywords.erase(keywords.begin() + i);
+                }
+            }
+        }
+    }
+    
+    
+    static char ext_buffer[20] = "";
+    
+    ImGui::InputText("Add Extension", ext_buffer, IM_ARRAYSIZE(ext_buffer));
+    if(ImGui::Button("Add a new extension")){
+        string ext_input = ext_buffer;
+        if(file_ext.size() < 10){
+            file_ext.push_back(ext_input);
+        }
+    }
+    
+     if(ImGui::Button("Remove entered extension")){
+        string ext_input = ext_buffer;
+        if(!file_ext.empty()){
+            for(int i = 0; i < file_ext.size(); i++){
+                if(file_ext[i].compare(ext_input) == 0){
+                    file_ext.erase(file_ext.begin() + i);
+                }
+            }
+        }
+    }
+    
+    
+    ImGui::End();
+
+    
+}
 
 void FileRename::filePreview(){
     ImGui::Begin("File Rename Preview");
@@ -161,29 +238,63 @@ void FileRename::filePreview(){
     
     ImGui::Columns(2);
     
-    static const char * keywords[]{"Arc", "Part", "Chapter", "Episode", "Volume"};
     static int selected_key = 0;
-    
-    static const char * file_ext[]{".txt", ".mp4", ".mvk"};
     static int selected_ext = 0;
-
     
-    ImGui::Text("Keyword Selection");
-    ImGui::ListBox("Keywords", &selected_key, keywords, IM_ARRAYSIZE(keywords));
-    ImGui::ListBox("File Extensions", &selected_ext, file_ext, IM_ARRAYSIZE(file_ext));
+    ImGui::Text("Keyword/File Selection");
+    
+    if(ImGui::BeginListBox("Keywords")){
+
+        for(int i = 0; i < keywords.size(); i++){
+            const bool selected = (selected_key == i);
+            string value = keywords[i];
+            
+            if(ImGui::Selectable(value.c_str(), selected)){
+               selected_key = i;
+            }
+        }
+        
+        ImGui::EndListBox();
+    }
+    
+    if(ImGui::BeginListBox("File Extensions")){
+
+        for(int i = 0; i < file_ext.size(); i++){
+            const bool selected = (selected_ext == i);
+            string value = file_ext[i];
+            
+            if(ImGui::Selectable(value.c_str(), selected)){
+               selected_ext = i;
+            }
+        }
+        
+        ImGui::EndListBox();
+    }
     
     ImGui::NextColumn();
+    
     ImGui::Text("Preview");
     ImGui::Separator();
     
     string new_filename = "";
-    string key(keywords[selected_key]);
-    string ext(file_ext[selected_ext]);
+    string key;
+    string ext;
+    
+    if(keywords.size() > 1 && file_ext.size() > 1){
+        key = keywords[selected_key];
+        ext = file_ext[selected_ext];
+    }
+    
     
     for(int i = 0; i < titles.size(); i++){
         string numeral = std::to_string(i + 1);
-        string title = titles[i];                              
-        new_filename = key + " " + numeral + " - " + title;
+        string title = titles[i];
+        
+        if(ignore && dir){
+            new_filename = key + " " + numeral + title;
+        }else{
+            new_filename = key + " " + numeral + " - " + title;
+        }
         
         if(!dir) new_filename += ext;
         
@@ -198,12 +309,12 @@ void FileRename::filePreview(){
      
 }
 
+
 void FileRename::createDir(){
     for(int i = 0; i < new_names.size(); i++){
         fs::create_directory(dir_path + '/' + new_names[i]);
     }
     
-    old_names.clear();
 }
 
 void FileRename::renameFiles(){
@@ -257,6 +368,7 @@ void FileRename::drawDisplay(){
     selectionTool();
     inputFile();
     filePreview();
+    editListValues();
     debug();
     
     ImGui::EndFrame();

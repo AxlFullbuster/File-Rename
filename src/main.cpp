@@ -19,6 +19,8 @@ int main(){
             int wheel = 0;
             SDL_Event e;
             while( SDL_PollEvent( &e ) != 0 ){
+                io.KeyMap[ImGuiKey_Backspace] = SDLK_BACKSPACE;
+                
                 if (e.type == SDL_QUIT) quit = true;
                 	else if (e.type == SDL_WINDOWEVENT){
                         if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED){
@@ -30,14 +32,20 @@ int main(){
                         wheel = e.wheel.y;
                     }
                     
+                    else if(e.type == SDL_TEXTINPUT){
+                        io.AddInputCharactersUTF8(e.text.text);
+                    }
+                    
                     else if(e.type == SDL_KEYDOWN && e.key.repeat == 0  ){
                         if(e.key.keysym.sym == SDLK_RCTRL) io.KeyCtrl = 1;
                         if(e.key.keysym.sym == SDLK_LCTRL) io.KeyCtrl = 1;
+                        if(e.key.keysym.sym == SDLK_BACKSPACE) io.KeysDown[SDLK_BACKSPACE] = 1;
                     }
                     
                     else if(e.type == SDL_KEYUP && e.key.repeat == 0  ){
                         if(e.key.keysym.sym == SDLK_RCTRL) io.KeyCtrl = 0;
                         if(e.key.keysym.sym == SDLK_LCTRL) io.KeyCtrl = 0;
+                        if(e.key.keysym.sym == SDLK_BACKSPACE) io.KeysDown[SDLK_BACKSPACE] = 0;
                     }
             }
 
