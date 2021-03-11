@@ -131,6 +131,12 @@ void FileRename::inputFile(){
     ImGui::Text("Current Loaded File:%s", filename.c_str());
     ImGui::Checkbox("Ignore input file.", &ignore);
     
+    static int offset = 0;
+    ImGui::InputInt("Numeral Offset", &offset);
+    if(offset > 1000)  offset = 1000;
+    else if(offset < 1) offset = 1;
+    num = offset;
+    
     static int limit = 0;
     if(!ignore){
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
@@ -139,7 +145,7 @@ void FileRename::inputFile(){
     ImGui::InputInt("File Limit", &limit);
     
     if(limit > 10) limit = 10;
-    else if(limit < 0) limit = 0;
+    else if(limit < 1) limit = 1;
     
     ImGui::NextColumn();
     
@@ -299,7 +305,7 @@ void FileRename::filePreview(){
     
     
     for(int i = 0; i < titles.size(); i++){
-        string numeral = std::to_string(i + 1);
+        string numeral = std::to_string(i + num);
         string title = titles[i];
         
         if(ignore && dir){

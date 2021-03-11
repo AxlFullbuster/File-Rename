@@ -36,7 +36,7 @@ class FileRename{
         int sy = SCREEN_HEIGHT / 144;
         
         int title_count = 0;
-        
+        int num = 0;
         
         bool dir = false;
         bool ready = false;
@@ -56,7 +56,7 @@ class FileRename{
         std::vector<std::string> file_ext;
         
         
-        std::string intToRoman(int);
+        std::string intToRoman();
         void selectionTool();
         void inputFile();
         void filePreview();
