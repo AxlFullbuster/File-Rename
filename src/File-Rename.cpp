@@ -14,7 +14,7 @@ namespace fs = boost::filesystem;
 
 FileRename::FileRename(){
     //uncomment line below to create empty txt files for testing
-    createFiles(25);
+    //createFiles(25);
 }
 
 FileRename::~FileRename(){
@@ -55,14 +55,19 @@ void FileRename::selectionTool(){
     
     ImGui::Checkbox("Check to allow renaming/creation.", &ready);
     ImGui::Checkbox("Check when creating directories.", &dir);
+
     
-     if(ImGui::Button("Rename Files")){
+    if(ImGui::Button("Rename Files")){
         if(!ready){
             ImGui::Text("Rename Status: Error");
+        }
+        else if(ready && dir){
+            ImGui::Text("Rename Status: Conflict between directory/files");
         }else{
             renameFiles();
         }
     }
+
     
     if(ImGui::Button("Create Directories")){
         if(!dir){
@@ -125,22 +130,32 @@ void FileRename::inputFile(){
     
     ImGui::Text("Current Loaded File:%s", filename.c_str());
     ImGui::Checkbox("Ignore input file.", &ignore);
+    
+    static int limit = 0;
+    if(!ignore){
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+    }
+    ImGui::InputInt("File Limit", &limit);
+    
+    if(limit > 10) limit = 10;
+    else if(limit < 0) limit = 0;
+    
     ImGui::NextColumn();
     
     ImGui::Text("Loaded Titles");
+    
     ImGui::Separator();
     
     if(ignore){
-        for(int i = 0; i < 10; i++){
-            titles.push_back(" ");
-        }
-        
+        while(titles.size() != limit) titles.push_back("");
         title_count = titles.size();
         dir = true;
         input = true;
-        ready = false;
+        ready = true;
         
         ImGui::Text("Ignoring Input File.");
+        
         ImGui::End();
         return;
     }
@@ -162,17 +177,14 @@ void FileRename::inputFile(){
         ImGui::Text("No Titles Found.");
     }
     
-    if(titles.size() == 0 && input){
-        for(int i = 0; i < 10; i++){
-            titles.push_back(" ");
-        }
-    }
-    
     title_count = titles.size();
     
+    if(!ignore){
+        ImGui::PopItemFlag();
+        ImGui::PopStyleVar();
+    }
     
-    ImGui::End();
-  
+    ImGui::End(); 
 }
 
 void FileRename::editListValues(){
@@ -280,7 +292,7 @@ void FileRename::filePreview(){
     string key;
     string ext;
     
-    if(keywords.size() > 1 && file_ext.size() > 1){
+    if(!keywords.empty() && !file_ext.empty() ){
         key = keywords[selected_key];
         ext = file_ext[selected_ext];
     }
@@ -311,10 +323,15 @@ void FileRename::filePreview(){
 
 
 void FileRename::createDir(){
-    for(int i = 0; i < new_names.size(); i++){
-        fs::create_directory(dir_path + '/' + new_names[i]);
+    if(ignore){
+        for(int i = 0; i < title_count; i++){
+            fs::create_directory(dir_path + '/' + new_names[i]);
+        }
+    }else{
+        for(int i = 0; i < new_names.size(); i++){
+            fs::create_directory(dir_path + '/' + new_names[i]);
+        }
     }
-    
 }
 
 void FileRename::renameFiles(){
