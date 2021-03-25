@@ -14,7 +14,7 @@ namespace fs = boost::filesystem;
 
 FileRename::FileRename(){
     //uncomment line below to create empty txt files for testing
-    //createFiles(25);
+    //createFiles(10);
 }
 
 FileRename::~FileRename(){
@@ -173,7 +173,7 @@ void FileRename::inputFile(){
     if(loaded_file.is_open()){
         while(getline(loaded_file, line)){
             ImGui::Text("%s", line.c_str());
-            line = line.erase(line.size() - 1).c_str();
+            //line = line.erase(line.size() - 1).c_str();
             titles.push_back(line);
         }
         
@@ -383,9 +383,9 @@ void FileRename::debug(){
 }
 
 void FileRename::drawDisplay(){
-    SDL_SetRenderDrawColor(renderer, 114, 144, 154, 255);
-    SDL_RenderClear(renderer);
-  
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame(window);
+    
     ImGui::NewFrame();
     
     selectionTool();
@@ -397,11 +397,9 @@ void FileRename::drawDisplay(){
     ImGui::EndFrame();
     
     ImGui::Render();
-    ImGuiSDL::Render(ImGui::GetDrawData());
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    SDL_GL_SwapWindow(window);
 
-	SDL_RenderPresent(renderer);
-    
-    SDL_Delay(10);
 }
 
 bool FileRename::initWindow(){
@@ -416,40 +414,63 @@ bool FileRename::initWindow(){
 			printf("Warning: Linear texture filtering not enabled!");
 	}
     
+    // GL 3.0 + GLSL 130
+    const char* glsl_version = "#version 130";
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     
-    window = SDL_CreateWindow("File_Rename", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
-    if (window == NULL){
-        printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
-        success = false;
+     // Create window with graphics context
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+    SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+    window = SDL_CreateWindow("FileRename", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
+    gl_context = SDL_GL_CreateContext(window);
+    SDL_GL_MakeCurrent(window, gl_context);
+    SDL_GL_SetSwapInterval(1); // Enable vsync
+    
+    
+    // Initialize OpenGL loader
+#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+    bool err = gl3wInit() != 0;
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+    bool err = glewInit() != GLEW_OK;
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+    bool err = gladLoadGL() == 0;
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD2)
+    bool err = gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress) == 0; // glad2 recommend using the windowing library loader instead of the (optionally) bundled one.
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING2)
+    bool err = false;
+    glbinding::Binding::initialize();
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING3)
+    bool err = false;
+    glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)SDL_GL_GetProcAddress(name); });
+#else
+    bool err = false; // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
+#endif
+    if (err)
+    {
+        fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+        return 1;
     }
     
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL){
-        printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-        success = false;
-    } else {
-        SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-    }
     
-    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, 160*2, 144*2);
     ImGui::CreateContext();
-    ImGuiSDL::Initialize(renderer, 640,320);
+    ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
+    ImGui_ImplOpenGL3_Init(glsl_version);
     
     return success;
 }
 
 void FileRename::closeWindow(){
-    
-    ImGuiSDL::Deinitialize();
-    
-    SDL_DestroyRenderer(renderer);
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
+    SDL_GL_DeleteContext(gl_context);
     SDL_DestroyWindow(window);
-    SDL_DestroyTexture(texture);
-    renderer = NULL;
-    window = NULL;
-    texture = NULL;
-    
-	ImGui::DestroyContext();
     SDL_Quit();
 }
 

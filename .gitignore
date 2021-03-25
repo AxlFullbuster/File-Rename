@@ -1,6 +1,7 @@
 # Editor project files
-FileRename.kpf
-.komodotools
+/*.kpf
+/*.komodotools
+/*.komodoproject
 
 # Testing repositories/files
 test/input.txt

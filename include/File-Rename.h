@@ -6,17 +6,25 @@
 #include<array>
 #include<map>
 #include<fstream>
-#include<SDL2/SDL.h>
+#include<SDL.h>
+#include <GL/glew.h>
+#include <SDL_opengl.h>
+#include <GL/glu.h>
 #include "imgui.h"
-#include "imgui_sdl.h"
 #include "imgui_internal.h"
 #include "ImGuiFileDialog.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_opengl3.h"
 #include<boost/filesystem.hpp>
 
 class FileRename{
     public:
         FileRename();
         ~FileRename();
+        
+        SDL_Window* window = NULL;
+        SDL_GLContext gl_context = NULL;
+        
         
         bool initWindow();
         void closeWindow();
@@ -25,15 +33,6 @@ class FileRename{
         
         
     private:
-        SDL_Window* window = NULL;
-        SDL_Renderer* renderer = NULL;
-        SDL_Texture* texture = NULL;
-        
-        const int SCREEN_WIDTH = 640;
-        const int SCREEN_HEIGHT = 320;
-        
-        int sx = SCREEN_WIDTH / 160;
-        int sy = SCREEN_HEIGHT / 144;
         
         int title_count = 0;
         int num = 0;
@@ -43,8 +42,8 @@ class FileRename{
         bool input = false;
         bool ignore = false;
         
-        std::string windowpath = "/mnt/c/Users/TDial/";
-        std::string test_path = "/mnt/c/Users/TDial/Desktop/coding-work/C++/Linux/File-Rename/test";
+        std::string windowpath = "/home";
+        std::string test_path = "../test";
         std::string filename = "";
         std::string filepath = "";
         std::string selectpath = "";

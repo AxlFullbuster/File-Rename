@@ -13,6 +13,7 @@ int main(){
         cout << "Failed to initialize display." << endl;
     }else{
         bool quit = false;
+        ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
         
         while(!quit){
             ImGuiIO& io = ImGui::GetIO();
@@ -48,6 +49,8 @@ int main(){
                         if(e.key.keysym.sym == SDLK_BACKSPACE) io.KeysDown[SDLK_BACKSPACE] = 0;
                     }
             }
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplSDL2_NewFrame(test.window);
 
             int mouseX, mouseY;
             const int buttons = SDL_GetMouseState(&mouseX, &mouseY);
@@ -60,12 +63,16 @@ int main(){
             io.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
             io.MouseWheel = static_cast<float>(wheel);
             
+            glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+            glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+            glClear(GL_COLOR_BUFFER_BIT);
             
             
             test.drawDisplay();
         }
-
+        
         test.closeWindow();
+
     }
     
     return 0; 
