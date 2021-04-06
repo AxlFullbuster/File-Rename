@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(EXECUTABLE_OUTPUT_PATH "out")
 set(sources ${src} ${imgui})
 
-find_package(Boost COMPONENTS regex system filesystem REQUIRED)
+find_package(Boost COMPONENTS system filesystem REQUIRED)
 
 find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
@@ -19,5 +19,5 @@ include_directories("./include" "./libs/imgui" ${SDL2_INCLUDE_DIRS} ${OPENGL_INC
 add_executable(FileRename ${sources})
 
 
-target_link_libraries(FileRename ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY}
-								${SDL2_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES})
+target_link_libraries(FileRename ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY}
+	${SDL2_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES})

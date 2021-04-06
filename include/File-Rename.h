@@ -1,6 +1,8 @@
 #ifndef FILERENAME_H
 #define FILERENAME_H
 
+#define SDL_MAIN_HANDLED
+
 #include<string>
 #include<vector>
 #include<array>
@@ -55,7 +57,7 @@ class FileRename{
         std::vector<std::string> file_ext;
         
         
-        std::string intToRoman();
+        
         void selectionTool();
         void inputFile();
         void filePreview();

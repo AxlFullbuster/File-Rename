@@ -1,4 +1,4 @@
-#include <File-Rename.h>
+#include "File-Rename.h"
 #include<iostream>
 
 using std::cout;
@@ -14,7 +14,7 @@ namespace fs = boost::filesystem;
 
 FileRename::FileRename(){
     //uncomment line below to create empty txt files for testing
-    //createFiles(10);
+    createFiles(10);
 }
 
 FileRename::~FileRename(){
@@ -29,7 +29,9 @@ void FileRename::createFiles(int n){
     fs::create_directory(create_path);
     
     for(int i = 1; i <= n; i++){
-        string num = std::to_string(i);
+        string num = "";
+        if(i < 10) num += '0';
+        num += std::to_string(i);
         
         string name = "Test " + num + ".txt";
         fstream file (create_path + name, fstream::out);
@@ -173,7 +175,7 @@ void FileRename::inputFile(){
     if(loaded_file.is_open()){
         while(getline(loaded_file, line)){
             ImGui::Text("%s", line.c_str());
-            //line = line.erase(line.size() - 1).c_str();
+            line = line.erase(line.size() - 1).c_str();
             titles.push_back(line);
         }
         
@@ -305,7 +307,10 @@ void FileRename::filePreview(){
     
     
     for(int i = 0; i < titles.size(); i++){
-        string numeral = std::to_string(i + num);
+        string numeral = "";
+        if(i < 9) numeral += '0';
+        numeral += std::to_string(i + num);
+        
         string title = titles[i];
         
         if(ignore && dir){
@@ -341,8 +346,14 @@ void FileRename::createDir(){
 }
 
 void FileRename::renameFiles(){
+    string old_name = old_names[0].substr(dir_path.length() + 1);
+    
     for(int i = 0; i < old_names.size(); i++){
-        fs::rename(old_names[i], dir_path + '/' + new_names[i]);
+        if(old_name.compare(new_names[i]) != 0){
+            fs::rename(old_names[i], dir_path + '/' + new_names[i]);
+        }else{
+            continue;
+        }
     }
     
     old_names.clear();
@@ -362,7 +373,8 @@ void FileRename::debug(){
     
     ImGui::Text("Old Filenames");
     for(int i = 0; i < old_names.size(); i++){
-        ImGui::Text("%s", old_names[i].c_str());
+        string old_name = old_names[i].substr(dir_path.length() + 1);
+        ImGui::Text("%s", old_name.c_str());
     }
     
     ImGui::NextColumn();
@@ -431,7 +443,7 @@ bool FileRename::initWindow(){
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(1); // Enable vsync
     
-    
+ 
     // Initialize OpenGL loader
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
     bool err = gl3wInit() != 0;
