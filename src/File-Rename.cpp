@@ -7,6 +7,7 @@ using std::vector;
 using std::string;
 using std::ifstream;
 using std::fstream;
+using std::sort;
 
 
 namespace fs = boost::filesystem;
@@ -79,6 +80,7 @@ void FileRename::selectionTool(){
         }
     }
     
+    
     if (igfd::ImGuiFileDialog::Instance()->FileDialog("ChooseDir")){
       if (igfd::ImGuiFileDialog::Instance()->IsOk == true){
         dir_path = igfd::ImGuiFileDialog::Instance()->GetCurrentPath();
@@ -86,6 +88,7 @@ void FileRename::selectionTool(){
             old_names.push_back(entry.path().c_str());
         }
       }
+      sort(old_names.begin(), old_names.end());
       igfd::ImGuiFileDialog::Instance()->CloseDialog("ChooseDir");
     }
     
