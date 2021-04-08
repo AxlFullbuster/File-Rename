@@ -44,7 +44,12 @@ class FileRename{
         bool input = false;
         bool ignore = false;
         
-        std::string windowpath = "/home";
+        #ifdef WIN32
+            std::string windowpath = "/mnt/c/";
+        #else
+            std::string windowpath = "/home/";
+        #endif
+        
         std::string test_path = "../test";
         std::string filename = "";
         std::string filepath = "";

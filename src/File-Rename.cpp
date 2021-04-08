@@ -53,7 +53,7 @@ void FileRename::selectionTool(){
     }
     
     if (ImGui::Button("Open Directory Selection")){
-        igfd::ImGuiFileDialog::Instance()->OpenDialog("ChooseDir", "Choose a Directory", 0, windowpath);
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseDir", "Choose a Directory", 0, windowpath);
     }
     
     ImGui::Checkbox("Check to allow renaming/creation.", &ready);
@@ -81,15 +81,15 @@ void FileRename::selectionTool(){
     }
     
     
-    if (igfd::ImGuiFileDialog::Instance()->FileDialog("ChooseDir")){
-      if (igfd::ImGuiFileDialog::Instance()->IsOk == true){
-        dir_path = igfd::ImGuiFileDialog::Instance()->GetCurrentPath();
+    if (ImGuiFileDialog::Instance()->Display("ChooseDir")){
+      if (ImGuiFileDialog::Instance()->IsOk()){
+        dir_path = ImGuiFileDialog::Instance()->GetCurrentPath();
         for(auto& entry: fs::directory_iterator(dir_path)){
             old_names.push_back(entry.path().c_str());
         }
       }
       sort(old_names.begin(), old_names.end());
-      igfd::ImGuiFileDialog::Instance()->CloseDialog("ChooseDir");
+      ImGuiFileDialog::Instance()->Close();
     }
     
     ImGui::NextColumn();
@@ -120,17 +120,17 @@ void FileRename::inputFile(){
     ImGui::Text("File Selection");
     
     if (ImGui::Button("Load input text file")){
-        igfd::ImGuiFileDialog::Instance()->OpenDialog("InputFile", "Select Files", ".txt", windowpath);
+        ImGuiFileDialog::Instance()->OpenDialog("InputFile", "Select Files", ".txt", windowpath);
     }
 
     
-     if (igfd::ImGuiFileDialog::Instance()->FileDialog("InputFile")){
-      if (igfd::ImGuiFileDialog::Instance()->IsOk == true){
-        filename = igfd::ImGuiFileDialog::Instance()->GetCurrentFileName();
-        selectpath = igfd::ImGuiFileDialog::Instance()->GetFilePathName();
-        filepath = igfd::ImGuiFileDialog::Instance()->GetCurrentPath() + '/';
+     if (ImGuiFileDialog::Instance()->Display("InputFile")){
+      if (ImGuiFileDialog::Instance()->IsOk()){
+        filename = ImGuiFileDialog::Instance()->GetCurrentFileName();
+        selectpath = ImGuiFileDialog::Instance()->GetFilePathName();
+        filepath = ImGuiFileDialog::Instance()->GetCurrentPath() + '/';
       }
-      igfd::ImGuiFileDialog::Instance()->CloseDialog("InputFile");
+      ImGuiFileDialog::Instance()->Close();
     }
     
     ImGui::Text("Current Loaded File:%s", filename.c_str());
