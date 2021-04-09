@@ -8,6 +8,7 @@ using std::string;
 using std::ifstream;
 using std::fstream;
 using std::sort;
+using std::min;
 
 
 namespace fs = boost::filesystem;
@@ -45,6 +46,7 @@ void FileRename::selectionTool(){
     
     ImGui::Columns(2);
     
+    string status;
     ImGui::Text("Selection Buttons");
     
     if(!input){
@@ -62,10 +64,10 @@ void FileRename::selectionTool(){
     
     if(ImGui::Button("Rename Files")){
         if(!ready){
-            ImGui::Text("Rename Status: Error");
+            status = "Renaming files has been locked";
         }
         else if(ready && dir){
-            ImGui::Text("Rename Status: Conflict between directory/files");
+            status = "Conflict between file renaming and directory creation";
         }else{
             renameFiles();
         }
@@ -74,11 +76,12 @@ void FileRename::selectionTool(){
     
     if(ImGui::Button("Create Directories")){
         if(!dir){
-            ImGui::Text("Creation Status: Error");
+            status = "Creating directories has been locked";
         }else{
             createDir();
         }
     }
+    ImGui::Text("Rename Status:%s", status.c_str());
     
     
     if (ImGuiFileDialog::Instance()->Display("ChooseDir")){
@@ -94,10 +97,16 @@ void FileRename::selectionTool(){
     
     ImGui::NextColumn();
     
-    ImGui::Text("Selected Files/Directory");
+    fs::path dir = dir_path;
+    ImGui::Text("Selected Directory");
     ImGui::Separator();
     
-    ImGui::Text("Directory:%s", dir_path.c_str());
+    
+    ImGui::Text("Directory:%s%s", "../" , dir.filename().c_str());
+    
+    if(ImGui::Button("Clear file list")){
+        old_names.clear();
+    }
     
     if(!input){
         ImGui::PopItemFlag();
@@ -349,9 +358,12 @@ void FileRename::createDir(){
 }
 
 void FileRename::renameFiles(){
+    int file_count = old_names.size();
+    int size_count = min(file_count, title_count);
+    
     string old_name = old_names[0].substr(dir_path.length() + 1);
     
-    for(int i = 0; i < old_names.size(); i++){
+    for(int i = 0; i < size_count ; i++){
         if(old_name.compare(new_names[i]) != 0){
             fs::rename(old_names[i], dir_path + '/' + new_names[i]);
         }else{
@@ -365,17 +377,20 @@ void FileRename::renameFiles(){
 void FileRename::debug(){
     ImGui::Begin("Debugger");
     
-    ImGui::Columns(4);
+    int file_count = old_names.size();
+    int size_count = min(file_count, title_count);
+    ImGui::Columns(3);
     
     ImGui::Text("Boolean/Int Values");
     ImGui::Text("Currently Creating Directories:%i", dir);
     ImGui::Text("Currently Renaming Files:%i", ready);
     ImGui::Text("Title Count:%i", title_count);
+    ImGui::Text("Size Count:%i", size_count);
     
     ImGui::NextColumn();
     
     ImGui::Text("Old Filenames");
-    for(int i = 0; i < old_names.size(); i++){
+    for(int i = 0; i < size_count; i++){
         string old_name = old_names[i].substr(dir_path.length() + 1);
         ImGui::Text("%s", old_name.c_str());
     }
@@ -387,11 +402,6 @@ void FileRename::debug(){
         ImGui::Text("%s", new_names[i].c_str());
     }
     
-    ImGui::NextColumn();
-    
-    ImGui::Text("File Paths");
-    ImGui::Separator();
-   
     
     ImGui::End();
     
