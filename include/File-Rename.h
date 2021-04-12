@@ -40,7 +40,7 @@ class FileRename{
         int num = 0;
         
         bool dir = false;
-        bool ready = false;
+        bool file = false;
         bool input = false;
         bool ignore = false;
         

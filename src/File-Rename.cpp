@@ -46,7 +46,6 @@ void FileRename::selectionTool(){
     
     ImGui::Columns(2);
     
-    string status;
     ImGui::Text("Selection Buttons");
     
     if(!input){
@@ -55,34 +54,21 @@ void FileRename::selectionTool(){
     }
     
     if (ImGui::Button("Open Directory Selection")){
+        old_names.clear();
         ImGuiFileDialog::Instance()->OpenDialog("ChooseDir", "Choose a Directory", 0, windowpath);
     }
     
-    ImGui::Checkbox("Check to allow renaming/creation.", &ready);
+    ImGui::Checkbox("Check when renaming files.", &file);
     ImGui::Checkbox("Check when creating directories.", &dir);
 
     
-    if(ImGui::Button("Rename Files")){
-        if(!ready){
-            status = "Renaming files has been locked";
-        }
-        else if(ready && dir){
-            status = "Conflict between file renaming and directory creation";
-        }else{
-            renameFiles();
-        }
+    if(ImGui::Button("Rename Files") && file){
+        renameFiles();
     }
 
-    
-    if(ImGui::Button("Create Directories")){
-        if(!dir){
-            status = "Creating directories has been locked";
-        }else{
-            createDir();
-        }
+    if(ImGui::Button("Create Directories") && dir){
+        createDir();
     }
-    ImGui::Text("Rename Status:%s", status.c_str());
-    
     
     if (ImGuiFileDialog::Instance()->Display("ChooseDir")){
       if (ImGuiFileDialog::Instance()->IsOk()){
@@ -103,10 +89,6 @@ void FileRename::selectionTool(){
     
     
     ImGui::Text("Directory:%s%s", "../" , dir.filename().c_str());
-    
-    if(ImGui::Button("Clear file list")){
-        old_names.clear();
-    }
     
     if(!input){
         ImGui::PopItemFlag();
@@ -172,7 +154,7 @@ void FileRename::inputFile(){
         title_count = titles.size();
         dir = true;
         input = true;
-        ready = true;
+        file = false;
         
         ImGui::Text("Ignoring Input File.");
         
@@ -320,7 +302,7 @@ void FileRename::filePreview(){
     
     for(int i = 0; i < titles.size(); i++){
         string numeral = "";
-        if(i < 9) numeral += '0';
+        if((i + num) <= 9) numeral += '0';
         numeral += std::to_string(i + num);
         
         string title = titles[i];
@@ -383,7 +365,7 @@ void FileRename::debug(){
     
     ImGui::Text("Boolean/Int Values");
     ImGui::Text("Currently Creating Directories:%i", dir);
-    ImGui::Text("Currently Renaming Files:%i", ready);
+    ImGui::Text("Currently Renaming Files:%i", file);
     ImGui::Text("Title Count:%i", title_count);
     ImGui::Text("Size Count:%i", size_count);
     
