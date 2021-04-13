@@ -4,7 +4,7 @@
 /*.komodoproject
 
 # Testing repositories/files
-test/input.txt
+test/input.frename
 test/Files
 
 # Cmake builds

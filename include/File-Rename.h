@@ -1,12 +1,9 @@
 #ifndef FILERENAME_H
 #define FILERENAME_H
 
-#define SDL_MAIN_HANDLED
-
 #include<string>
 #include<vector>
 #include<array>
-#include<map>
 #include<fstream>
 #include<SDL.h>
 #include <GL/glew.h>
@@ -27,15 +24,11 @@ class FileRename{
         SDL_Window* window = NULL;
         SDL_GLContext gl_context = NULL;
         
-        
         bool initWindow();
         void closeWindow();
         void drawDisplay();
-        void createFiles(int n);
-        
         
     private:
-        
         int title_count = 0;
         int num = 0;
         
@@ -43,25 +36,19 @@ class FileRename{
         bool file = false;
         bool input = false;
         bool ignore = false;
+      
+        std::string windowpath;
+        std::string test_path;
+        std::string filename;
+        std::string filepath;
+        std::string selectpath;
+        std::string dir_path;
         
-        #ifdef WIN32
-            std::string windowpath = "/mnt/c/";
-        #else
-            std::string windowpath = "/home/";
-        #endif
-        
-        std::string test_path = "../test";
-        std::string filename = "";
-        std::string filepath = "";
-        std::string selectpath = "";
-        std::string dir_path = "";
         std::vector<std::string> titles;
         std::vector<std::string> old_names;
         std::array<std::string, 100> new_names;
         std::vector<std::string> keywords;
         std::vector<std::string> file_ext;
-        
-        
         
         void selectionTool();
         void inputFile();
@@ -70,6 +57,7 @@ class FileRename{
         void createDir();
         void renameFiles();
         void debug();
+        void createFiles(int n);
     
 };
 

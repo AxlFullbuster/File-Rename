@@ -1,8 +1,6 @@
 #include "File-Rename.h"
 #include<iostream>
 
-using std::cout;
-using std::endl;
 using std::vector;
 using std::string;
 using std::ifstream;
@@ -15,6 +13,13 @@ namespace fs = boost::filesystem;
 
 
 FileRename::FileRename(){
+    windowpath = "/home/";
+    test_path = "../test";
+    filename = "";
+    filepath = "";
+    selectpath = "";
+    dir_path = "";
+    
     //uncomment line below to create empty txt files for testing
     createFiles(10);
 }
@@ -23,9 +28,6 @@ FileRename::~FileRename(){
     //Do Nothing
 }
 
-/*
- * Method for testing MAKE SURE TO REMOVE
- */
 void FileRename::createFiles(int n){
     string create_path = test_path + "/Files/";
     fs::create_directory(create_path);
@@ -98,8 +100,6 @@ void FileRename::selectionTool(){
     ImGui::End();
 }
 
-
-
 void FileRename::inputFile(){
     ImGui::Begin("Input Text File");
     
@@ -110,12 +110,12 @@ void FileRename::inputFile(){
     ImGui::Columns(2);
     ImGui::Text("File Selection");
     
-    if (ImGui::Button("Load input text file")){
-        ImGuiFileDialog::Instance()->OpenDialog("InputFile", "Select Files", ".txt", windowpath);
+    if (ImGui::Button("Load input file")){
+        ImGuiFileDialog::Instance()->OpenDialog("InputFile", "Select Files", ".frename", windowpath);
     }
 
     
-     if (ImGuiFileDialog::Instance()->Display("InputFile")){
+    if (ImGuiFileDialog::Instance()->Display("InputFile")){
       if (ImGuiFileDialog::Instance()->IsOk()){
         filename = ImGuiFileDialog::Instance()->GetCurrentFileName();
         selectpath = ImGuiFileDialog::Instance()->GetFilePathName();
@@ -240,8 +240,6 @@ void FileRename::editListValues(){
     
     
     ImGui::End();
-
-    
 }
 
 void FileRename::filePreview(){
@@ -322,10 +320,8 @@ void FileRename::filePreview(){
 
     titles.clear();
     
-    ImGui::End();
-     
+    ImGui::End();  
 }
-
 
 void FileRename::createDir(){
     if(ignore){
@@ -386,7 +382,6 @@ void FileRename::debug(){
     
     
     ImGui::End();
-    
 }
 
 void FileRename::drawDisplay(){
@@ -406,7 +401,6 @@ void FileRename::drawDisplay(){
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(window);
-
 }
 
 bool FileRename::initWindow(){
@@ -440,23 +434,24 @@ bool FileRename::initWindow(){
     
  
     // Initialize OpenGL loader
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-    bool err = gl3wInit() != 0;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-    bool err = glewInit() != GLEW_OK;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-    bool err = gladLoadGL() == 0;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD2)
-    bool err = gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress) == 0; // glad2 recommend using the windowing library loader instead of the (optionally) bundled one.
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING2)
-    bool err = false;
-    glbinding::Binding::initialize();
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING3)
-    bool err = false;
-    glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)SDL_GL_GetProcAddress(name); });
-#else
-    bool err = false; // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
-#endif
+    #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+        bool err = gl3wInit() != 0;
+    #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+        bool err = glewInit() != GLEW_OK;
+    #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+        bool err = gladLoadGL() == 0;
+    #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD2)
+        bool err = gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress) == 0; // glad2 recommend using the windowing library loader instead of the (optionally) bundled one.
+    #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING2)
+        bool err = false;
+        glbinding::Binding::initialize();
+    #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING3)
+        bool err = false;
+        glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)SDL_GL_GetProcAddress(name); });
+    #else
+        bool err = false; // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
+    #endif
+    
     if (err)
     {
         fprintf(stderr, "Failed to initialize OpenGL loader!\n");
@@ -480,6 +475,3 @@ void FileRename::closeWindow(){
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
-
-
-
