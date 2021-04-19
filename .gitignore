@@ -4,13 +4,10 @@
 /*.komodoproject
 
 # Testing repositories/files
-test/input.frename
+test/*.frename
 test/Files
+test/*.txt
 
 # Cmake builds
 build
 test/build
-
-# imgui init
-imgui.ini
-
