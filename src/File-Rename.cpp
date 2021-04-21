@@ -152,6 +152,7 @@ void FileRename::inputFile(){
     if(ignore){
         while(titles.size() != limit) titles.push_back("");
         title_count = titles.size();
+        new_names.resize(title_count);
         dir = true;
         input = true;
         file = false;
@@ -169,7 +170,6 @@ void FileRename::inputFile(){
     if(loaded_file.is_open()){
         while(getline(loaded_file, line)){
             ImGui::Text("%s", line.c_str());
-            line = line.erase(line.size() - 1).c_str();
             titles.push_back(line);
         }
         
@@ -180,6 +180,7 @@ void FileRename::inputFile(){
     }
     
     title_count = titles.size();
+    new_names.resize(title_count);
     
     if(!ignore){
         ImGui::PopItemFlag();
@@ -333,6 +334,7 @@ void FileRename::createDir(){
             fs::create_directory(dir_path + '/' + new_names[i]);
         }
     }
+    
 }
 
 void FileRename::renameFiles(){

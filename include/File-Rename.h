@@ -46,7 +46,7 @@ class FileRename{
         
         std::vector<std::string> titles;
         std::vector<std::string> old_names;
-        std::array<std::string, 100> new_names;
+        std::vector<std::string> new_names;
         std::vector<std::string> keywords;
         std::vector<std::string> file_ext;
         
