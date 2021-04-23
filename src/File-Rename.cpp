@@ -61,6 +61,8 @@ void FileRename::selectionTool(){
     if (ImGui::Button("Open Directory Selection")){
         old_names.clear();
         ImGuiFileDialog::Instance()->OpenDialog("ChooseDir", "Choose a Directory", 0, windowpath);
+        ImGui::SetNextWindowPos(ImVec2(60,60), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
+        ImGui::SetNextWindowSize(ImVec2(882,361), ImGuiCond_FirstUseEver);
     }
     
     ImGui::Checkbox("Check when renaming files.", &file);
@@ -118,6 +120,8 @@ void FileRename::inputFile(){
     
     if (ImGui::Button("Load input file")){
         ImGuiFileDialog::Instance()->OpenDialog("InputFile", "Select Files", ".frename", windowpath);
+        ImGui::SetNextWindowPos(ImVec2(60,60), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
+        ImGui::SetNextWindowSize(ImVec2(803,377), ImGuiCond_FirstUseEver);
     }
 
     
@@ -176,7 +180,7 @@ void FileRename::inputFile(){
     if(loaded_file.is_open()){
         while(getline(loaded_file, line)){
             ImGui::Text("%s", line.c_str());
-            line = line.erase(line.size() - 1).c_str();
+            if(line.at(line.size() - 1) == '\r') line = line.erase(line.size() - 1).c_str();
             titles.push_back(line);
         }
         
