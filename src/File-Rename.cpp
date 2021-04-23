@@ -81,7 +81,9 @@ void FileRename::selectionTool(){
       if (ImGuiFileDialog::Instance()->IsOk()){
         dir_path = ImGuiFileDialog::Instance()->GetCurrentPath();
         for(auto& entry: fs::directory_iterator(dir_path)){
-            old_names.push_back(entry.path().c_str());
+            if (fs::is_regular_file(entry.path())) {
+               old_names.push_back(entry.path().c_str());
+            }
         }
       }
       sort(old_names.begin(), old_names.end());
