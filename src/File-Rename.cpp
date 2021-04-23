@@ -44,6 +44,9 @@ void FileRename::createFiles(int n){
 }
 
 void FileRename::selectionTool(){
+    ImGui::SetNextWindowPos(ImVec2(231,9), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
+    ImGui::SetNextWindowSize(ImVec2(898,193), ImGuiCond_FirstUseEver);
+    
     ImGui::Begin("Customize Selection Criteria");
     
     ImGui::Columns(2);
@@ -101,6 +104,9 @@ void FileRename::selectionTool(){
 }
 
 void FileRename::inputFile(){
+    ImGui::SetNextWindowPos(ImVec2(6,282), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
+    ImGui::SetNextWindowSize(ImVec2(539,202), ImGuiCond_FirstUseEver);
+    
     ImGui::Begin("Input Text File");
     
     
@@ -170,6 +176,7 @@ void FileRename::inputFile(){
     if(loaded_file.is_open()){
         while(getline(loaded_file, line)){
             ImGui::Text("%s", line.c_str());
+            line = line.erase(line.size() - 1).c_str();
             titles.push_back(line);
         }
         
@@ -191,6 +198,9 @@ void FileRename::inputFile(){
 }
 
 void FileRename::editListValues(){
+    ImGui::SetNextWindowPos(ImVec2(547,281), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
+    ImGui::SetNextWindowSize(ImVec2(335,203), ImGuiCond_FirstUseEver);
+    
     ImGui::Begin("Add/Remove Keywords/File Extensions");
     
     ImGui::Text("Total Keys:%i", keywords.size());
@@ -244,6 +254,9 @@ void FileRename::editListValues(){
 }
 
 void FileRename::filePreview(){
+    ImGui::SetNextWindowPos(ImVec2(883,208), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
+    ImGui::SetNextWindowSize(ImVec2(651,358), ImGuiCond_FirstUseEver);
+    
     ImGui::Begin("File Rename Preview");
     
     ImGui::Text("Here you can select a keyword to prefix your titles, and see a preview of the renamed file");
@@ -355,6 +368,9 @@ void FileRename::renameFiles(){
 }
 
 void FileRename::debug(){
+    ImGui::SetNextWindowPos(ImVec2(99,620), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
+    ImGui::SetNextWindowSize(ImVec2(1284,128), ImGuiCond_FirstUseEver);
+    
     ImGui::Begin("Debugger");
     
     int file_count = old_names.size();
@@ -378,6 +394,8 @@ void FileRename::debug(){
     ImGui::NextColumn();
     
     ImGui::Text("New FileNames");
+    ImGui::Separator();
+    
     for(int i = 0; i < new_names.size(); i++){
         ImGui::Text("%s", new_names[i].c_str());
     }
