@@ -37,12 +37,9 @@ class FileRename{
         bool input = false;
         bool ignore = false;
       
-        std::string windowpath;
-        std::string test_path;
-        std::string filename;
-        std::string filepath;
-        std::string selectpath;
         std::string dir_path;
+        std::string filename;
+        std::string selectpath;
         
         std::vector<std::string> titles;
         std::vector<std::string> old_names;
@@ -57,7 +54,7 @@ class FileRename{
         void createDir();
         void renameFiles();
         void debug();
-        void createFiles(int n);
+        void createFiles(int);
     
 };
 

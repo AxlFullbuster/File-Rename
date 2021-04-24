@@ -13,11 +13,6 @@ namespace fs = boost::filesystem;
 
 
 FileRename::FileRename(){
-    windowpath = "/home/";
-    test_path = "../test";
-    filename = "";
-    filepath = "";
-    selectpath = "";
     dir_path = "";
     
     //uncomment line below to create empty txt files for testing
@@ -29,7 +24,7 @@ FileRename::~FileRename(){
 }
 
 void FileRename::createFiles(int n){
-    string create_path = test_path + "/Files/";
+    string create_path = "../test/Files/";
     fs::create_directory(create_path);
     
     for(int i = 1; i <= n; i++){
@@ -60,7 +55,7 @@ void FileRename::selectionTool(){
     
     if (ImGui::Button("Open Directory Selection")){
         old_names.clear();
-        ImGuiFileDialog::Instance()->OpenDialog("ChooseDir", "Choose a Directory", 0, windowpath);
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseDir", "Choose a Directory", 0, "/home/");
         ImGui::SetNextWindowPos(ImVec2(60,60), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
         ImGui::SetNextWindowSize(ImVec2(882,361), ImGuiCond_FirstUseEver);
     }
@@ -121,17 +116,15 @@ void FileRename::inputFile(){
     ImGui::Text("File Selection");
     
     if (ImGui::Button("Load input file")){
-        ImGuiFileDialog::Instance()->OpenDialog("InputFile", "Select Files", ".frename", windowpath);
+        ImGuiFileDialog::Instance()->OpenDialog("InputFile", "Select Files", ".frename", "/home/");
         ImGui::SetNextWindowPos(ImVec2(60,60), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
         ImGui::SetNextWindowSize(ImVec2(803,377), ImGuiCond_FirstUseEver);
     }
-
     
     if (ImGuiFileDialog::Instance()->Display("InputFile")){
       if (ImGuiFileDialog::Instance()->IsOk()){
         filename = ImGuiFileDialog::Instance()->GetCurrentFileName();
         selectpath = ImGuiFileDialog::Instance()->GetFilePathName();
-        filepath = ImGuiFileDialog::Instance()->GetCurrentPath() + '/';
       }
       ImGuiFileDialog::Instance()->Close();
     }
