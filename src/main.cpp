@@ -5,6 +5,23 @@ using std::cout;
 using std::endl;
 using std::string;
 
+/**
+ * The main method of the File-Rename class.
+ *
+ * The method initializes the main SDL window and
+ * waits for SDL events such as keyboard input or
+ * if the buttons on the window are clicked.
+ *
+ * The method will also render all of the ImGui windows
+ * into the main window.
+ *
+ * The method will continue this until the main window is
+ * closed.
+ *
+ * @see initWindow()
+ * @see closeWindow()
+ * @see drawDisplay()
+ */
 int main(){
     FileRename test;
     

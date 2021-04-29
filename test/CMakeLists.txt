@@ -10,6 +10,6 @@ include_directories("../include")
 add_executable(rename-test catch2-tests.cpp catch2-main.cpp)
 
 include(FindPkgConfig)
-find_package(Boost COMPONENTS regex system filesystem REQUIRED)
+find_package(Boost COMPONENTS system filesystem REQUIRED)
 
-target_link_libraries(rename-test ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY})
+target_link_libraries(rename-test ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})

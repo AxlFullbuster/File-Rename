@@ -16,7 +16,7 @@ FileRename::FileRename(){
     dir_path = "";
     
     //uncomment line below to create empty txt files for testing
-    createFiles(10);
+    //createFiles(10);
 }
 
 FileRename::~FileRename(){
@@ -38,6 +38,28 @@ void FileRename::createFiles(int n){
     }
 }
 
+/**
+ * The window displays two columns
+ * the first column contains buttons for directory selection,
+ * renaming files, and creating directories. It also contains
+ * checkboxes for user confirmation. 
+ *
+ * The second column contains the current selected directory.
+ *
+ * The method will add the file names found in the chosen directory
+ * into the "old_names" vector.
+ *
+ * This window will be inaccessable to the user if an input file
+ * is not loaded and the user is not ignoring this requirement.
+ *
+ * @see old_names
+ * @see input
+ * @see ignore
+ * @see file
+ * @see dir
+ * @see dir_path
+ * @see inputFile()
+ */
 void FileRename::selectionTool(){
     ImGui::SetNextWindowPos(ImVec2(231,9), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
     ImGui::SetNextWindowSize(ImVec2(898,193), ImGuiCond_FirstUseEver);
@@ -102,6 +124,42 @@ void FileRename::selectionTool(){
     ImGui::End();
 }
 
+/**
+ * The window is resonsible for handling input files.
+ *
+ * Contains a button for selecting an input file, a checkbox to
+ * ignore the input file requirement, and two text fields that will
+ * hold integer values.
+ *
+ * The first text field is resposible for the numeral offset of the number
+ * displayed before the new name of a file. The limit is between 1 and 1,000.
+ * The value of "num" is then updated to this value.
+ *
+ * The second text field is used when the user is ignoring the input file
+ * requirement and is used to set a limit of how many directories to create.
+ * The limit is between 1 and 10. This field is inaccessable otherwise.
+ *
+ * Regardless of wether or not an input file was chosen. The "titles" vector
+ * has elements added into it and "title_count" is updated to hold the current
+ * size of the vector.
+ *
+ * "new_names" is also resized to the current value of "title_count".
+ *
+ * Note: method contains a check for the carriage return character('/r')
+ * when reading from an input file on a windows machine. This is done to
+ * prevent an unrecognizeable character from appearing in the renamed file.
+ *
+ * @see new_names
+ * @see titles
+ * @see title_count
+ * @see num
+ * @see filename
+ * @see selectpath
+ * @see ignore
+ * @see input
+ * @see file
+ * @see dir
+ */
 void FileRename::inputFile(){
     ImGui::SetNextWindowPos(ImVec2(6,282), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
     ImGui::SetNextWindowSize(ImVec2(539,202), ImGuiCond_FirstUseEver);
@@ -196,6 +254,25 @@ void FileRename::inputFile(){
     ImGui::End(); 
 }
 
+/**
+ * The window gives the user the ability to add
+ * and remove keywords and file extensions.
+ *
+ * Two text fields that accept string values are created here.
+ * One is for keywords and the other is for file extensions.
+ *
+ * Two buttons are put at the bottom of each text field that will
+ * add or remove the value from "keywords" and "file_ext".
+ *
+ * Note: The length of the string characters cannot exceed 20 characters.
+ * 
+ * Note: A limit is set for both vectors to have no more than
+ * 10 values.
+ * 
+ * @see keywords
+ * @see file_ext
+ * @see filePreview()
+ */
 void FileRename::editListValues(){
     ImGui::SetNextWindowPos(ImVec2(547,281), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
     ImGui::SetNextWindowSize(ImVec2(335,203), ImGuiCond_FirstUseEver);
@@ -252,6 +329,28 @@ void FileRename::editListValues(){
     ImGui::End();
 }
 
+/**
+ * The window displays the keyword and file extensions 
+ * that are selectable, and a preview of what the renamed files
+ * will look like. It is split into 2 columns.
+ *
+ * The first column displays two boxes where the user can select a keyword and
+ * file extension. The contents of these boxes contain the elements of
+ * "keyword" and "file_ext".
+ *
+ * The second column displays the contents of "new_names" where each
+ * element contains:
+ * the combined values of a keyword, a numeral value determined by "num",
+ * the elements in "titles", and a file extension.
+ *
+ * Note: the file extension will be ommited if the user is creating directories
+ * Note: the "titles "vector" is cleared at the end of this method
+ *
+ * @see new_names
+ * @see titles
+ * @see keywords
+ * @see file_ext
+ */
 void FileRename::filePreview(){
     ImGui::SetNextWindowPos(ImVec2(883,208), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
     ImGui::SetNextWindowSize(ImVec2(651,358), ImGuiCond_FirstUseEver);
@@ -336,6 +435,18 @@ void FileRename::filePreview(){
     ImGui::End();  
 }
 
+/**
+ * Creates a set amount of directories specified either by
+ * the value of "title_count" or by the size of "new_names".
+ *
+ * The directories will be put in the path specificed in
+ * "dir_path".
+ *
+ * @see ignore
+ * @see title_count
+ * @see new_names
+ * @see dir_path
+ */
 void FileRename::createDir(){
     if(ignore){
         for(int i = 0; i < title_count; i++){
@@ -349,6 +460,19 @@ void FileRename::createDir(){
     
 }
 
+/**
+ * Renames the filenames in "old_names" to the
+ * ones in "new_names". The method will not rename
+ * files if both elements in "new_names" and "old_names"
+ * are equal.
+ *
+ * Note: "old_names' is cleared at the end of this method.
+ * 
+ * @see new_names
+ * @see old_names
+ * @see dir_path
+ *
+ */
 void FileRename::renameFiles(){
     int file_count = old_names.size();
     int size_count = min(file_count, title_count);
@@ -365,6 +489,7 @@ void FileRename::renameFiles(){
     
     old_names.clear();
 }
+
 
 void FileRename::debug(){
     ImGui::SetNextWindowPos(ImVec2(99,620), ImGuiCond_FirstUseEver, ImVec2(0.0f,0.0f));
@@ -403,6 +528,13 @@ void FileRename::debug(){
     ImGui::End();
 }
 
+/**
+ * @see selectionTool()
+ * @see inputFile()
+ * @see editListValues()
+ * @see debug()
+ * @see window
+ */
 void FileRename::drawDisplay(){
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(window);
@@ -422,6 +554,10 @@ void FileRename::drawDisplay(){
     SDL_GL_SwapWindow(window);
 }
 
+/**
+ * @see window
+ * @see gl_context
+ */
 bool FileRename::initWindow(){
     bool success = true;
     
@@ -471,8 +607,7 @@ bool FileRename::initWindow(){
         bool err = false; // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
     #endif
     
-    if (err)
-    {
+    if (err) {
         fprintf(stderr, "Failed to initialize OpenGL loader!\n");
         return 1;
     }
@@ -485,6 +620,10 @@ bool FileRename::initWindow(){
     return success;
 }
 
+/**
+ * @see window
+ * @see gl_context
+ */
 void FileRename::closeWindow(){
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();

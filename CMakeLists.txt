@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.10.2)
 project(FileRename)
 install(DIRECTORY DESTINATION "out")
 
-file(GLOB imgui "./libs/imgui/*.h" "./libs/imgui/*.cpp")
+file(GLOB imgui "./include/libs/imgui/*.h" "./include/libs/imgui/*.cpp")
 file(GLOB src "./src/*.h" "./src/*.cpp")
 
 set(CMAKE_CXX_STANDARD 14)
@@ -15,7 +15,7 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
-include_directories("./include" "./libs/imgui" ${SDL2_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS})
+include_directories("./include" "./include/libs/imgui" ${SDL2_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS})
 add_executable(FileRename ${sources})
 
 

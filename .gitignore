@@ -11,3 +11,7 @@ test/*.txt
 # Cmake builds
 build
 test/build
+
+# Doxygen Output
+Doxygen/html
+Doxygen/latex
