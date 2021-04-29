@@ -46,7 +46,7 @@ The program uses [CMake](https://cmake.org/) for compiling. Here is a simple exa
 
 
 
-#External Libraries
+# External Libraries
 The following libraries are used in this program:  
 - [ImGui](https://github.com/ocornut/imgui)  
 - [Boost](https://www.boost.org/)  
@@ -54,5 +54,5 @@ The following libraries are used in this program:
 - [SDL](https://www.libsdl.org/)  
 
 
-#License
+# License
 This program is licensed under the MIT License. See "LICENSE" for more details.
