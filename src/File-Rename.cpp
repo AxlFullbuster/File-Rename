@@ -234,6 +234,7 @@ void FileRename::inputFile(){
         while(getline(loaded_file, line)){
             ImGui::Text("%s", line.c_str());
             if(line.at(line.size() - 1) == '\r') line = line.erase(line.size() - 1).c_str();
+            line.erase(remove(line.begin(), line.end(), ' '), line.end());
             titles.push_back(line);
         }
         
