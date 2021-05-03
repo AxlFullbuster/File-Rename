@@ -30,28 +30,28 @@ customizable options when it came to handling files. Hence I created this progra
 
 # Features
 ## Input Files
-![Input][Documentation/Input-File.gif]  
+![Input](Documentation/Input-File.gif)  
 The program can load in input files with the extension ".frename" which is a custom extension that I made up. The input
 files are just simple text files where each word is separated by line. A sample file is included in the repository for your
 reference.
 
 ## Keywords & Extensions
-![Key-Ext][Documentation/Keywords-Extensions.gif]  
+![Key-Ext](Documentation/Keywords-Extensions.gif) 
 You can prefix the titles you give in an input file with special keywords. As well as denote what file extension you would
 like the renamed file to end with. You can add up to 10 of each. Also note that the length of a keyword and extension cannot
 be more than 50 characters.
 
 ## Ignoring Input Files
-![Ignoring][Documentation/Ignoring-Input.gif]  
+![Ignoring](Documentation/Ignoring-Input.gif)  
 If you prefer to not use titles to rename your files you can choose to ignore them and use keywords instead.
 
 ## Numeral Offset
-![Numerals][Documentation/Numerals.gif]  
+![Numerals](Documentation/Numerals.gif)  
 The rename files are given a numeral value based on when they appear in the input file. This numeral value can be changed
 if you are simply adding to a group of files that you have already renamed.
 
 # Demo
-![Demo][Documentation/Demo.gif]  
+![Demo](Documentation/Demo.gif)  
 
 # Intended_Use
 Currently the program only works on Linux machines and Windows machines that can run the windows subsystem.
