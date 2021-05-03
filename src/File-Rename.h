@@ -15,6 +15,8 @@
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
 #include<boost/filesystem.hpp>
+#include <boost/exception/error_info.hpp>
+#include <errno.h>
 
 /**
  * The File-Rename class.

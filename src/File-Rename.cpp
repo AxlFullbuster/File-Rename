@@ -16,7 +16,7 @@ FileRename::FileRename(){
     dir_path = "";
     
     //uncomment line below to create empty txt files for testing
-    //createFiles(10);
+    createFiles(10);
 }
 
 FileRename::~FileRename(){
@@ -203,7 +203,7 @@ void FileRename::inputFile(){
     }
     ImGui::InputInt("File Limit", &limit);
     
-    if(limit > 10) limit = 10;
+    if(limit > 100) limit = 100;
     else if(limit < 1) limit = 1;
     
     ImGui::NextColumn();
@@ -216,9 +216,7 @@ void FileRename::inputFile(){
         while(titles.size() != limit) titles.push_back("");
         title_count = titles.size();
         new_names.resize(title_count);
-        dir = true;
         input = true;
-        file = false;
         
         ImGui::Text("Ignoring Input File.");
         
@@ -283,7 +281,7 @@ void FileRename::editListValues(){
     ImGui::Text("Total Keys:%i", keywords.size());
     ImGui::Text("Total Extensions:%i", file_ext.size());
     
-    static char key_buffer[20] = "";
+    static char key_buffer[50] = "";
     ImGui::InputText("Add Keyword", key_buffer, IM_ARRAYSIZE(key_buffer));
     
     if(ImGui::Button("Add a new keyword")){
@@ -305,7 +303,7 @@ void FileRename::editListValues(){
     }
     
     
-    static char ext_buffer[20] = "";
+    static char ext_buffer[50] = "";
     
     ImGui::InputText("Add Extension", ext_buffer, IM_ARRAYSIZE(ext_buffer));
     if(ImGui::Button("Add a new extension")){
@@ -418,8 +416,8 @@ void FileRename::filePreview(){
         
         string title = titles[i];
         
-        if(ignore && dir){
-            new_filename = key + " " + numeral + title;
+        if(ignore){
+            new_filename = key + " - " + numeral;
         }else{
             new_filename = key + " " + numeral + " - " + title;
         }
@@ -482,7 +480,13 @@ void FileRename::renameFiles(){
     
     for(int i = 0; i < size_count ; i++){
         if(old_name.compare(new_names[i]) != 0){
-            fs::rename(old_names[i], dir_path + '/' + new_names[i]);
+            try{
+                fs::rename(old_names[i], dir_path + '/' + new_names[i]);
+            }catch(const boost::filesystem::filesystem_error& e){
+                if(e.code() == boost::system::errc::no_such_file_or_directory){
+                    continue;
+                }
+            } 
         }else{
             continue;
         }
