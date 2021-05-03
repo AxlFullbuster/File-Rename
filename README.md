@@ -16,7 +16,7 @@ directories in a specified folder.
 4. [Intended Use](#Intended_Use)  
 5. [Constraints](#Constraints)  
 6. [Compiling](#Compiling)    
-7. [External_Libraries](#External_Libraries/Tools)    
+7. [External_Libraries](#External_Libraries)    
 8. [License](#License)  
 
 
@@ -77,7 +77,7 @@ The program uses [CMake](https://cmake.org/) for compiling. Here is a simple exa
 All of the CMake dependent files will be put into the "build" folder along with the executable.  
 
 
-# External_Libraries/Tools
+# External_Libraries/
 The following libraries are used in this program:  
 - [ImGui](https://github.com/ocornut/imgui)  
 - [Boost](https://www.boost.org/)  
