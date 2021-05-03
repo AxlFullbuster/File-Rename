@@ -10,14 +10,14 @@ directories in a specified folder.
 
 
 # Table Of Contents
-1. [Motivation](#Motivation)
-2. [Features](#Features)
-3. [Demo](#Demo)
-4. [Intended Use](#Intended_Use)
-5. [Constraints](#Constraints)
-6. [Compiling](#Compiling)  
-7. [External_Libraries](#External_Libraries/Tools)  
-8. [License](#License)
+1. [Motivation](#Motivation)  
+2. [Features](#Features)  
+3. [Demo](#Demo)  
+4. [Intended Use](#Intended_Use)  
+5. [Constraints](#Constraints)  
+6. [Compiling](#Compiling)    
+7. [External_Libraries](#External_Libraries/Tools)    
+8. [License](#License)  
 
 
 
@@ -47,7 +47,7 @@ If you prefer to not use titles to rename your files you can choose to ignore th
 
 ## Numeral Offset
 ![Numerals](Documentation/Numerals.gif)  
-The rename files are given a numeral value based on when they appear in the input file. This numeral value can be changed
+The renamed files are given a numeral value based on when they appear in the input file. This numeral value can be changed
 if you are simply adding to a group of files that you have already renamed.
 
 # Demo
@@ -59,11 +59,11 @@ The program is designed with simple renaming/directory creation in mind. So if y
 with more complex features I suggest trying a different program.
 
 # Constraints
-- You cannot individual select a set amount of files to rename. The program will add all of the files it can find
+- You cannot individualy select a set amount of files to rename. The program will add all of the files it can find
 in a given directory.  
-- You cannot filter files to load by extension so I'd recommend organizing your folders to have only 1 type of extension.  
+- You cannot filter files to load by extension, so I'd recommend organizing your folders to have only 1 type of extension.  
 - I'd recommend to not play around with your file explorer while you are trying to rename programs. Such as deleting files that
-are already loaded and prepped to rename. You risking possibly overwriting a file with an unintended name. 
+are already loaded and prepped to rename. You risk possibly overwriting a file with an unintended name. 
 
 # Compiling
 The program uses [CMake](https://cmake.org/) for compiling. Here is a simple example:
