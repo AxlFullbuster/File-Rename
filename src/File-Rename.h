@@ -34,7 +34,7 @@ class FileRename{
         SDL_Window* window = NULL; /**< An SDL variable that holds data for the window */
         SDL_GLContext gl_context = NULL; /**< An OpenGL context created by SDl for rendering */
         
-        bool initWindow(); /**< member function that initalizes the main window of the program */
+        bool initWindow(); /**< member function that initializes the main window of the program */
 
         void closeWindow(); /**< member function that closes the main window and
                              *clears data used for rendering */
@@ -48,8 +48,7 @@ class FileRename{
         bool dir = false; /**< boolean variable that checks if the user is creating directories*/
         bool file = false; /**< boolean variable that checks if the user is renaming files */
         bool input = false; /**< boolean variable that checks if an input file has been read */
-        bool ignore = false; /**< boolean variable that checks if input files are being ingnored
-                              *   Note: if this is set to true only directories can be created */
+        bool ignore = false; /**< boolean variable that checks if input files are being ignored*/
       
         std::string dir_path; /**< string variable that stores the directory path where
                                *created directories/renamed files will be sent to*/
@@ -73,7 +72,7 @@ class FileRename{
                              * to choose keywords and file extensions. As well as preview the
                              * names files will be renamed to */
         
-        void editListValues(); /**< member function that displays an Imgui window for users
+        void editListValues(); /**< member function that displays an ImGui window for users
                                 * to add/remove keywords and file extensions */
         
         void createDir(); /**< member function that creates directories named after elements

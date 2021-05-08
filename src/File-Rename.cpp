@@ -125,21 +125,21 @@ void FileRename::selectionTool(){
 }
 
 /**
- * The window is resonsible for handling input files.
+ * The window is responsible for handling input files.
  *
- * Contains a button for selecting an input file, a checkbox to
+ * Contains a button for selecting an input file, a check-box to
  * ignore the input file requirement, and two text fields that will
  * hold integer values.
  *
- * The first text field is resposible for the numeral offset of the number
+ * The first text field is responsible for the numeral offset of the number
  * displayed before the new name of a file. The limit is between 1 and 1,000.
  * The value of "num" is then updated to this value.
  *
  * The second text field is used when the user is ignoring the input file
  * requirement and is used to set a limit of how many directories to create.
- * The limit is between 1 and 10. This field is inaccessable otherwise.
+ * The limit is between 1 and 100. This field is inaccessible otherwise.
  *
- * Regardless of wether or not an input file was chosen. The "titles" vector
+ * Regardless of whether or not an input file was chosen. The "titles" vector
  * has elements added into it and "title_count" is updated to hold the current
  * size of the vector.
  *
@@ -147,7 +147,7 @@ void FileRename::selectionTool(){
  *
  * Note: method contains a check for the carriage return character('/r')
  * when reading from an input file on a windows machine. This is done to
- * prevent an unrecognizeable character from appearing in the renamed file.
+ * prevent an unrecognizable character from appearing in the renamed file.
  *
  * @see new_names
  * @see titles
@@ -263,7 +263,7 @@ void FileRename::inputFile(){
  * Two buttons are put at the bottom of each text field that will
  * add or remove the value from "keywords" and "file_ext".
  *
- * Note: The length of the string characters cannot exceed 20 characters.
+ * Note: The length of the string characters cannot exceed 50 characters.
  * 
  * Note: A limit is set for both vectors to have no more than
  * 10 values.
