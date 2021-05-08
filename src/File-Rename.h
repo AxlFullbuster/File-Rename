@@ -16,6 +16,7 @@
 #include "imgui_impl_opengl3.h"
 #include<boost/filesystem.hpp>
 #include <boost/exception/error_info.hpp>
+#include <boost/algorithm/string.hpp>
 #include <errno.h>
 
 /**
